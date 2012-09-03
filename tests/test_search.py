@@ -47,6 +47,9 @@ class TestSearchForIdOrSignature:
     @pytest.mark.nondestructive
     @pytest.mark.parametrize(('product'), _expected_products)
     def test_that_advanced_search_for_product_can_be_filtered(self, mozwebqa, product):
+
+        if product == 'Firefox': pytest.xfail(reason='Bug 787910 - Socorro returns error message when searching in advance search')
+
         csp = CrashStatsHomePage(mozwebqa)
         csp.header.select_product(product)
         cs_advanced = csp.header.click_advanced_search()
@@ -79,6 +82,7 @@ class TestSearchForIdOrSignature:
             Assert.contains(report.version, version)
 
     @pytest.mark.nondestructive
+    @pytest.mark.xfail(reason='Bug 787910 - Socorro returns error message when searching in advance search')
     def test_that_advanced_search_drilldown_results_are_correct(self, mozwebqa):
         # https://bugzilla.mozilla.org/show_bug.cgi?id=679310
         csp = CrashStatsHomePage(mozwebqa)
